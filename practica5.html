@@ -34,82 +34,62 @@
 
 
     <script>
-       
-        
-       
+      var informacion =  "<h1>Universidad DeLaSalle Bajío AC.</h1>"
+            informacion += "<p><strong>Dirección:</strong> Avenida Universidad 602, Lomas del Campestre, 37150 León, Gto, México.</p>"
+            informacion += "<p><strong>Teléfono:</strong>477 710 8500.</p>"
 
+        function iniciaMapa() {
 
-     if(navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(position => {
+            var propiedades = {
+                center: {
+                    lat: 21.152639, lng: -101.711598
+                },
+                zoom: 14
+            };
 
-                    let position1 = {
+            const mapa = document.getElementById("map")
+            const map = new google.maps.Map(mapa,propiedades)
+
+            if(navigator.geolocation){
+
+                navigator.geolocation.getCurrentPosition( position => {
+
+                    let posicion = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     }
 
-                    let position2 = {
-                        lat :  21.152639, 
-                        lng : -101.711598
-                    }
-
-                    let position3 = {
-                        lat: 21.15872,
-                        lng: -101.69516
-                    }
-
-                    let propertiesMarker1 = {
-                        position: position1,
+                    let propiedadesMarcador = {
+                        position: posicion,
                         map,
-                        title: "Marker1"
+                        title: "Marcardor"
                     }
 
-                    let propertiesMarker2 = {
-                        position: position2,
-                        map,
-                        title: "Marker2"
-                    }
+                    const marcador = new google.maps.Marker(propiedadesMarcador);
+
+                    map.setCenter(posicion)
+
+                    const infowindow = new google.maps.InfoWindow({
+                        content : informacion
+                    })
+
+                    marcador.addListener("click", ()=>{
+                        infowindow.open(map,marcador);
+                    })
                     
-                    let propertiesMarker3 = {
-                        position: position3,
-                        map,
-                        title: "Marker3"
-                    }
 
-                    const marker1 = new google.maps.Marker(propertiesMarker1);
-                    const marker2 = new google.maps.Marker(propertiesMarker2);
-                    const marker3 = new google.maps.Marker(propertiesMarker3);
+                })
 
-                    map.setCenter(position1);
-
-                    const infoWindow1 = new google.maps.InfoWindow({
-                        content : informacion1
-                    });
-
-                    const infoWindow2 = new google.maps.InfoWindow({
-                        content : informacion2
-                    });
-
-                    const infoWindow3 = new google.maps.InfoWindow({
-                        content : informacion3
-                    });
-
-                    //mouseover can be changed to click
-                    marker1.addListener("mouseover", ()=>{
-                        infoWindow1.open(map, marker1);
-                    })
-
-                    marker2.addListener("click", ()=>{
-                        infoWindow2.open(map, marker2);
-                    })
-
-                    marker3.addListener("click", ()=>{
-                        infoWindow3.open(map, marker3);
-                    })
-
-
-                });
 
             }
+
+
+        }  
+        
+       
+
+
+     
 
 
     <!-- Bootstrap 5 beta -->
