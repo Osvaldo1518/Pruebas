@@ -37,77 +37,49 @@
 
 
 
-       if(navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(position => {
-
-                    let position1 = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }
-
-                    let position2 = {
-                        lat :  21.152639, 
-                        lng : -101.711598
-                    }
-
-                    let position3 = {
-                        lat: 21.15872,
-                        lng: -101.69516
-                    }
-
-                    let propertiesMarker1 = {
-                        position: position1,
-                        map,
-                        title: "Marker1"
-                    }
-
-                    let propertiesMarker2 = {
-                        position: position2,
-                        map,
-                        title: "Marker2"
-                    }
-                    
-                    let propertiesMarker3 = {
-                        position: position3,
-                        map,
-                        title: "Marker3"
-                    }
-
-                    const marker1 = new google.maps.Marker(propertiesMarker1);
-                    const marker2 = new google.maps.Marker(propertiesMarker2);
-                    const marker3 = new google.maps.Marker(propertiesMarker3);
-
-                    map.setCenter(position1);
-
-                    const infoWindow1 = new google.maps.InfoWindow({
-                        content : informacion1
-                    });
-
-                    const infoWindow2 = new google.maps.InfoWindow({
-                        content : informacion2
-                    });
-
-                    const infoWindow3 = new google.maps.InfoWindow({
-                        content : informacion3
-                    });
-
-                    //mouseover can be changed to click
-                    marker1.addListener("mouseover", ()=>{
-                        infoWindow1.open(map, marker1);
-                    })
-
-                    marker2.addListener("click", ()=>{
-                        infoWindow2.open(map, marker2);
-                    })
-
-                    marker3.addListener("click", ()=>{
-                        infoWindow3.open(map, marker3);
-                    })
-
-
-                });
-
-            }
+       window.onload = function() {
+function initialize() {
+ 
+var latlng = new google.maps.LatLng(41.652393,1.691895);
+var mapOptions = {
+zoom: 8,
+center: latlng,
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+}
+var map = new google.maps.Map(document.getElementById('mapa'), mapOptions);
+setMarkers(map, marcadores);
+}
+ 
+var marcadores = [
+['Barcelona',41.385064,2.173404,'Barcelona'],
+['Tarragona',41.119019,1.245212,'Tarragona'],
+['Girona',41.9794,2.821426,'Girona'],
+['Lleida',41.60034,0.609762,'Lleida'],
+];
+ 
+var infowindow;
+function setMarkers(map, marcadores) {
+ 
+for (var i = 0; i < marcadores.length; i++) {
+var myLatLng = new google.maps.LatLng(marcadores[i][1], marcadores[i][2]);
+var marker = new google.maps.Marker({
+position: myLatLng,
+map: map,
+title: marcadores[i][0],
+});
+(function(i, marker) {
+google.maps.event.addListener(marker,'click',function() {
+if (!infowindow) {
+infowindow = new google.maps.InfoWindow();
+}
+infowindow.setContent(marcadores[i][3]);
+infowindow.open(map, marker);
+});
+})(i, marker);
+}
+};
+initialize();
+}
 
 
     <!-- Bootstrap 5 beta -->
